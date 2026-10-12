@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { CalendarDays, MapPin } from "lucide-react";
+import CardDesigner from "@/components/CardDesigner";
 import ReminderButton from "@/components/ReminderButton";
 import StatusMessage from "@/components/StatusMessage";
 import { useAsyncData } from "@/hooks/useAsyncData";
@@ -82,6 +83,8 @@ export default function EventDetails() {
 
         <ReminderButton eventId={event.id} />
       </div>
+
+      <CardDesigner event={event} />
     </article>
   );
 }

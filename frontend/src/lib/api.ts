@@ -193,3 +193,26 @@ export function setReminder(token: string, eventId: number | string, enabled: bo
     token,
   });
 }
+
+export type SavedCardDesign = {
+  theme: "sunset" | "ocean" | "forest";
+  stickers: ("star" | "heart" | "fire" | "music" | "party")[];
+};
+
+export function getCardDesign(token: string, eventId: number | string) {
+  return request<{ design: SavedCardDesign | null }>(`/events/${eventId}/card-design`, {
+    token,
+  });
+}
+
+export function saveCardDesign(
+  token: string,
+  eventId: number | string,
+  design: SavedCardDesign,
+) {
+  return request<{ design: SavedCardDesign }>(`/events/${eventId}/card-design`, {
+    method: "PUT",
+    body: design,
+    token,
+  });
+}
