@@ -81,3 +81,88 @@ export function login(input: { email: string; password: string }) {
 export function getCurrentUser(token: string) {
   return request<{ user: User }>("/auth/me", { token });
 }
+
+export type Category = "MUSIC" | "WORKSHOP" | "FOOD" | "SPORTS" | "KIDS";
+
+export type Event = {
+  id: number;
+  title: string;
+  category: Category;
+  city: string;
+  startsAt: string;
+  price: number;
+  description: string;
+  imageUrl: string;
+  isActive: boolean;
+};
+
+export type Pagination = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+};
+
+export type EventList = {
+  events: Event[];
+  pagination: Pagination;
+};
+
+export type EventFilters = {
+  category?: string;
+  city?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
+};
+
+export type NewEvent = {
+  title: string;
+  category: Category;
+  city: string;
+  startsAt: string;
+  price: number;
+  description: string;
+  imageUrl: string;
+};
+
+function toQueryString(params: Record<string, string | number | undefined>) {
+  const query = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") query.set(key, String(value));
+  });
+  const text = query.toString();
+  return text ? `?${text}` : "";
+}
+
+export function getEvents(filters: EventFilters = {}) {
+  return request<EventList>(`/events${toQueryString(filters)}`);
+}
+
+export function getEventCities() {
+  return request<{ cities: string[] }>("/events/cities");
+}
+
+export function getEvent(id: string | number) {
+  return request<{ event: Event }>(`/events/${id}`);
+}
+
+export function getAdminEvents(token: string, page = 1) {
+  return request<EventList>(`/admin/events${toQueryString({ page })}`, { token });
+}
+
+export function createEvent(token: string, input: NewEvent) {
+  return request<{ event: Event }>("/admin/events", {
+    method: "POST",
+    body: input,
+    token,
+  });
+}
+
+export function setEventStatus(token: string, id: number, isActive: boolean) {
+  return request<{ event: Event }>(`/admin/events/${id}/status`, {
+    method: "PATCH",
+    body: { isActive },
+    token,
+  });
+}

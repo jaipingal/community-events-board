@@ -13,12 +13,12 @@ import {
 } from "lucide-react";
 import HomeActions from "@/components/HomeActions";
 
-const categories: { name: string; description: string; icon: LucideIcon }[] = [
-  { name: "Music", description: "Concerts, gigs and open mics", icon: Music },
-  { name: "Workshop", description: "Learn something new, hands-on", icon: Hammer },
-  { name: "Food", description: "Festivals, tastings and street food", icon: UtensilsCrossed },
-  { name: "Sports", description: "Runs, leagues and tournaments", icon: Trophy },
-  { name: "Kids", description: "Fun for the little ones", icon: Baby },
+const categories: { name: string; value: string; description: string; icon: LucideIcon }[] = [
+  { name: "Music", value: "MUSIC", description: "Concerts, gigs and open mics", icon: Music },
+  { name: "Workshop", value: "WORKSHOP", description: "Learn something new, hands-on", icon: Hammer },
+  { name: "Food", value: "FOOD", description: "Festivals, tastings and street food", icon: UtensilsCrossed },
+  { name: "Sports", value: "SPORTS", description: "Runs, leagues and tournaments", icon: Trophy },
+  { name: "Kids", value: "KIDS", description: "Fun for the little ones", icon: Baby },
 ];
 
 const features: { title: string; text: string; icon: LucideIcon }[] = [
@@ -66,10 +66,10 @@ export default function Home() {
           </p>
 
           <ul className="mt-6 grid grid-cols-2 gap-3 sm:mt-8 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
-            {categories.map(({ name, description, icon: Icon }) => (
+            {categories.map(({ name, value, description, icon: Icon }) => (
               <li key={name} className="last:col-span-2 sm:last:col-span-1">
                 <Link
-                  href={`/events?category=${name}`}
+                  href={`/events?category=${value}`}
                   className="flex h-full flex-col gap-2 rounded-lg border border-zinc-200 p-4 transition hover:border-zinc-400 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:border-zinc-600 dark:hover:bg-zinc-900"
                 >
                   <Icon className="size-6" aria-hidden="true" />

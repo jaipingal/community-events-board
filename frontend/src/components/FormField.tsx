@@ -1,3 +1,6 @@
+export const inputClass =
+  "rounded-md border border-zinc-300 bg-transparent px-3 py-2 outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/20 aria-invalid:border-red-500 dark:border-zinc-700 dark:focus:border-zinc-100";
+
 type FormFieldProps = {
   label: string;
   name: string;
@@ -30,7 +33,7 @@ export default function FormField({
         autoComplete={autoComplete}
         onChange={(e) => onChange(e.target.value)}
         aria-invalid={error ? true : undefined}
-        className="rounded-md border border-zinc-300 bg-transparent px-3 py-2 outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/20 aria-invalid:border-red-500 dark:border-zinc-700 dark:focus:border-zinc-100"
+        className={inputClass}
       />
       {error ? <p className="text-sm text-red-600">{error}</p> : null}
     </div>
