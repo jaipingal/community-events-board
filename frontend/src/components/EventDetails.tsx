@@ -11,6 +11,7 @@ import { useAsyncData } from "@/hooks/useAsyncData";
 import { getEvent } from "@/lib/api";
 import { categoryLabel } from "@/lib/categories";
 import { formatDate, formatPrice } from "@/lib/format";
+import { buttonClass } from "@/components/Button";
 
 export default function EventDetails() {
   const params = useParams<{ id: string }>();
@@ -31,7 +32,7 @@ export default function EventDetails() {
           <div className="flex gap-3">
             <button
               onClick={reload}
-              className="rounded-md border border-zinc-300 px-4 py-2 text-sm hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
+              className={buttonClass("secondary")}
             >
               Try again
             </button>

@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import PreferencesForm from "@/components/PreferencesForm";
 import RequireLogin from "@/components/RequireLogin";
+
+export const metadata: Metadata = { title: "Preferences | Events Board" };
 
 export default function PreferencesPage() {
   return (

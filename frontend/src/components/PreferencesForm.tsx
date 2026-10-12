@@ -6,6 +6,8 @@ import { useAsyncData } from "@/hooks/useAsyncData";
 import { getFavoriteCategories, saveFavoriteCategories, type Category } from "@/lib/api";
 import { categories } from "@/lib/categories";
 import { useAppSelector } from "@/store/hooks";
+import { buttonClass } from "@/components/Button";
+import Alert from "@/components/Alert";
 
 export default function PreferencesForm() {
   const token = useAppSelector((state) => state.auth.token) ?? "";
@@ -29,14 +31,7 @@ export default function PreferencesForm() {
         kind="error"
         title="Could not load your preferences"
         text={saved.error}
-        action={
-          <button
-            onClick={saved.reload}
-            className="rounded-md border border-zinc-300 px-4 py-2 text-sm hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
-          >
-            Try again
-          </button>
-        }
+        onRetry={saved.reload}
       />
     );
   }
@@ -80,8 +75,8 @@ export default function PreferencesForm() {
               aria-pressed={isSelected}
               className={
                 isSelected
-                  ? "rounded-full bg-zinc-900 px-5 py-2 text-sm text-white dark:bg-zinc-100 dark:text-zinc-900"
-                  : "rounded-full border border-zinc-300 px-5 py-2 text-sm hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
+                  ? "rounded-full bg-zinc-900 px-5 py-2 text-sm text-white transition duration-150 motion-safe:active:scale-95 dark:bg-zinc-100 dark:text-zinc-900"
+                  : "rounded-full border border-zinc-300 px-5 py-2 text-sm transition duration-150 hover:bg-zinc-100 motion-safe:active:scale-95 dark:border-zinc-700 dark:hover:bg-zinc-800"
               }
             >
               {item.label}
@@ -90,23 +85,12 @@ export default function PreferencesForm() {
         })}
       </div>
 
-      {message ? (
-        <p
-          role={message.type === "error" ? "alert" : "status"}
-          className={
-            message.type === "error"
-              ? "rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300"
-              : "rounded-md bg-green-50 px-3 py-2 text-sm text-green-800 dark:bg-green-950 dark:text-green-300"
-          }
-        >
-          {message.text}
-        </p>
-      ) : null}
+      {message ? <Alert type={message.type}>{message.text}</Alert> : null}
 
       <button
         onClick={handleSave}
         disabled={saving}
-        className="w-full rounded-md bg-zinc-900 px-4 py-2 text-white hover:bg-zinc-700 disabled:opacity-60 sm:w-fit dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
+        className={buttonClass("primary", "w-full sm:w-fit")}
       >
         {saving ? "Saving..." : "Save preferences"}
       </button>

@@ -8,12 +8,12 @@ export default function EventCard({ event }: { event: Event }) {
   return (
     <Link
       href={`/events/${event.id}`}
-      className="flex h-full flex-col overflow-hidden rounded-lg border border-zinc-200 transition hover:border-zinc-400 dark:border-zinc-800 dark:hover:border-zinc-600"
+      className="group flex h-full flex-col overflow-hidden rounded-lg border border-zinc-200 transition duration-200 hover:border-zinc-400 hover:shadow-md motion-safe:hover:-translate-y-1 dark:border-zinc-800 dark:hover:border-zinc-600"
     >
       <div
         role="img"
         aria-label={event.title}
-        className="aspect-video w-full bg-zinc-200 bg-cover bg-center dark:bg-zinc-800"
+        className="aspect-video w-full bg-zinc-200 bg-cover bg-center transition-transform duration-300 motion-safe:group-hover:scale-105 dark:bg-zinc-800"
         style={{ backgroundImage: `url(${event.imageUrl})` }}
       />
       <div className="flex flex-1 flex-col gap-2 p-4">

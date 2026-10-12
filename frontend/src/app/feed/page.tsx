@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import FeedList from "@/components/FeedList";
 import RequireLogin from "@/components/RequireLogin";
+
+export const metadata: Metadata = { title: "My feed | Events Board" };
 
 export default function FeedPage() {
   return (

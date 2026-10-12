@@ -18,6 +18,8 @@ import {
 } from "@/lib/cardDesign";
 import { formatDate } from "@/lib/format";
 import { useAppSelector } from "@/store/hooks";
+import { buttonClass } from "@/components/Button";
+import Alert from "@/components/Alert";
 
 export default function CardDesigner({ event }: { event: Event }) {
   const { user, token, loading: authLoading } = useAppSelector((state) => state.auth);
@@ -60,14 +62,7 @@ export default function CardDesigner({ event }: { event: Event }) {
         kind="error"
         title="Could not load your card design"
         text={saved.error}
-        action={
-          <button
-            onClick={saved.reload}
-            className="rounded-md border border-zinc-300 px-4 py-2 text-sm hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
-          >
-            Try again
-          </button>
-        }
+        onRetry={saved.reload}
       />
     );
   }
@@ -148,11 +143,7 @@ export default function CardDesigner({ event }: { event: Event }) {
               key={theme.key}
               onClick={() => handleTheme(theme.key)}
               aria-pressed={theme.key === design.theme}
-              className={
-                theme.key === design.theme
-                  ? "rounded-md bg-zinc-900 px-4 py-2 text-sm text-white dark:bg-zinc-100 dark:text-zinc-900"
-                  : "rounded-md border border-zinc-300 px-4 py-2 text-sm hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
-              }
+              className={buttonClass(theme.key === design.theme ? "primary" : "secondary")}
             >
               {theme.label}
             </button>
@@ -171,7 +162,7 @@ export default function CardDesigner({ event }: { event: Event }) {
               onClick={() => handleAddSticker(sticker.key)}
               disabled={limitReached}
               aria-label={`Add ${sticker.label} sticker`}
-              className="rounded-md border border-zinc-300 px-3 py-2 text-2xl hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-zinc-700 dark:hover:bg-zinc-800"
+              className="rounded-md border border-zinc-300 px-3 py-2 text-2xl transition duration-150 hover:bg-zinc-100 motion-safe:hover:scale-110 disabled:cursor-not-allowed disabled:opacity-40 dark:border-zinc-700 dark:hover:bg-zinc-800"
             >
               {sticker.emoji}
             </button>
@@ -190,7 +181,7 @@ export default function CardDesigner({ event }: { event: Event }) {
                 <button
                   onClick={() => handleRemoveSticker(index)}
                   aria-label={`Remove ${key} sticker`}
-                  className="flex items-center gap-1 rounded-full bg-zinc-100 px-3 py-1 text-sm hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+                  className="flex items-center gap-1 rounded-full bg-zinc-100 px-3 py-1 text-sm transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"
                 >
                   <span aria-hidden="true">{stickerEmoji(key)}</span>
                   <X className="size-3" aria-hidden="true" />
@@ -201,23 +192,12 @@ export default function CardDesigner({ event }: { event: Event }) {
         ) : null}
       </div>
 
-      {message ? (
-        <p
-          role={message.type === "error" ? "alert" : "status"}
-          className={
-            message.type === "error"
-              ? "rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300"
-              : "rounded-md bg-green-50 px-3 py-2 text-sm text-green-800 dark:bg-green-950 dark:text-green-300"
-          }
-        >
-          {message.text}
-        </p>
-      ) : null}
+      {message ? <Alert type={message.type}>{message.text}</Alert> : null}
 
       <button
         onClick={handleSave}
         disabled={saving}
-        className="w-full rounded-md bg-zinc-900 px-4 py-2 text-white hover:bg-zinc-700 disabled:opacity-60 sm:w-fit dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
+        className={buttonClass("primary", "w-full sm:w-fit")}
       >
         {saving ? "Saving..." : "Save design"}
       </button>

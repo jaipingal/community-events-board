@@ -70,7 +70,7 @@ export default function Home() {
               <li key={name} className="last:col-span-2 sm:last:col-span-1">
                 <Link
                   href={`/events?category=${value}`}
-                  className="flex h-full flex-col gap-2 rounded-lg border border-zinc-200 p-4 transition hover:border-zinc-400 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:border-zinc-600 dark:hover:bg-zinc-900"
+                  className="flex h-full flex-col gap-2 rounded-lg border border-zinc-200 p-4 transition duration-200 hover:border-zinc-400 hover:bg-zinc-50 hover:shadow-md motion-safe:hover:-translate-y-1 dark:border-zinc-800 dark:hover:border-zinc-600 dark:hover:bg-zinc-900"
                 >
                   <Icon className="size-6" aria-hidden="true" />
                   <span className="font-medium">{name}</span>

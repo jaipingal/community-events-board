@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import Link from "next/link";
 import { Bell, BellRing } from "lucide-react";
+import { buttonClass } from "@/components/Button";
 import { useAsyncData } from "@/hooks/useAsyncData";
 import { getReminder, setReminder } from "@/lib/api";
 import { useAppSelector } from "@/store/hooks";
@@ -54,11 +55,7 @@ export default function ReminderButton({ eventId }: { eventId: number }) {
         onClick={handleClick}
         disabled={saved.loading || pending}
         aria-pressed={enabled}
-        className={
-          enabled
-            ? "flex w-fit items-center gap-2 rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-60 dark:bg-zinc-100 dark:text-zinc-900"
-            : "flex w-fit items-center gap-2 rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-100 disabled:opacity-60 dark:border-zinc-700 dark:hover:bg-zinc-800"
-        }
+        className={buttonClass(enabled ? "primary" : "secondary", "w-fit")}
       >
         {enabled ? (
           <BellRing className="size-4" aria-hidden="true" />

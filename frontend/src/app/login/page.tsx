@@ -7,6 +7,8 @@ import FormField from "@/components/FormField";
 import type { AuthError } from "@/store/authSlice";
 import { handleLogin } from "@/store/authSlice";
 import { useAppDispatch } from "@/store/hooks";
+import { buttonClass } from "@/components/Button";
+import Alert from "@/components/Alert";
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
@@ -62,16 +64,12 @@ export default function LoginPage() {
           error={fieldErrors.password}
         />
 
-        {formError ? (
-          <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
-            {formError}
-          </p>
-        ) : null}
+        {formError ? <Alert type="error">{formError}</Alert> : null}
 
         <button
           type="submit"
           disabled={submitting}
-          className="rounded-md bg-zinc-900 px-4 py-2 text-white hover:bg-zinc-700 disabled:opacity-60 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
+          className={buttonClass("primary")}
         >
           {submitting ? "Logging in..." : "Log in"}
         </button>

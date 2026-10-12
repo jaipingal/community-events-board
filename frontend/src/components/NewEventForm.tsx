@@ -6,6 +6,8 @@ import FormField, { inputClass } from "@/components/FormField";
 import { ApiError, createEvent } from "@/lib/api";
 import { categories } from "@/lib/categories";
 import { useAppSelector } from "@/store/hooks";
+import { buttonClass } from "@/components/Button";
+import Alert from "@/components/Alert";
 
 const emptyForm = {
   title: "",
@@ -55,7 +57,7 @@ export default function NewEventForm() {
         description: form.description,
         imageUrl: form.imageUrl,
       });
-      router.push("/admin/events");
+      router.push("/admin/events?created=1");
     } catch (err) {
       if (err instanceof ApiError && err.details.length > 0) {
         const errors: Record<string, string> = {};
@@ -160,16 +162,12 @@ export default function NewEventForm() {
           ) : null}
         </div>
 
-        {formError ? (
-          <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
-            {formError}
-          </p>
-        ) : null}
+        {formError ? <Alert type="error">{formError}</Alert> : null}
 
         <button
           type="submit"
           disabled={submitting}
-          className="rounded-md bg-zinc-900 px-4 py-2 text-white hover:bg-zinc-700 disabled:opacity-60 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
+          className={buttonClass("primary")}
         >
           {submitting ? "Creating..." : "Create event"}
         </button>

@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import EventsExplorer from "@/components/EventsExplorer";
 import StatusMessage from "@/components/StatusMessage";
+
+export const metadata: Metadata = { title: "Events | Events Board" };
 
 export default function EventsPage() {
   return (

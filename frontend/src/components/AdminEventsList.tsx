@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import StatusMessage from "@/components/StatusMessage";
 import Pagination from "@/components/Pagination";
 import { useAsyncData } from "@/hooks/useAsyncData";
@@ -9,25 +10,38 @@ import { getAdminEvents, setEventStatus } from "@/lib/api";
 import { categoryLabel } from "@/lib/categories";
 import { formatDate, formatPrice } from "@/lib/format";
 import { useAppSelector } from "@/store/hooks";
+import { buttonClass } from "@/components/Button";
+import Alert from "@/components/Alert";
 
 export default function AdminEventsList() {
   const token = useAppSelector((state) => state.auth.token);
   const [page, setPage] = useState(1);
   const [pendingId, setPendingId] = useState<number | null>(null);
-  const [actionError, setActionError] = useState("");
+  const [actionMessage, setActionMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
+  const justCreated = useSearchParams().get("created") === "1";
 
   const fetchEvents = useCallback(() => getAdminEvents(token ?? "", page), [token, page]);
   const { data, error, loading, reload } = useAsyncData(fetchEvents);
 
-  const handleToggle = async (id: number, isActive: boolean) => {
-    setActionError("");
+  const handleToggle = async (id: number, title: string, isActive: boolean) => {
+    setActionMessage(null);
     setPendingId(id);
 
     try {
       await setEventStatus(token ?? "", id, isActive);
+      setActionMessage({
+        type: "success",
+        text: `"${title}" is now ${isActive ? "active" : "inactive"}.`,
+      });
       reload();
     } catch (err) {
-      setActionError(err instanceof Error ? err.message : "Could not update the event");
+      setActionMessage({
+        type: "error",
+        text: err instanceof Error ? err.message : "Could not update the event",
+      });
     } finally {
       setPendingId(null);
     }
@@ -39,16 +53,16 @@ export default function AdminEventsList() {
         <h1 className="text-2xl font-semibold sm:text-3xl">Manage events</h1>
         <Link
           href="/admin/events/new"
-          className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
+          className={buttonClass("primary")}
         >
           New event
         </Link>
       </div>
 
-      {actionError ? (
-        <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
-          {actionError}
-        </p>
+      {actionMessage ? (
+        <Alert type={actionMessage.type}>{actionMessage.text}</Alert>
+      ) : justCreated ? (
+        <Alert type="success">The event was created.</Alert>
       ) : null}
 
       {loading ? (
@@ -58,14 +72,7 @@ export default function AdminEventsList() {
           kind="error"
           title="Could not load events"
           text={error}
-          action={
-            <button
-              onClick={reload}
-              className="rounded-md border border-zinc-300 px-4 py-2 text-sm hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
-            >
-              Try again
-            </button>
-          }
+          onRetry={reload}
         />
       ) : data.events.length === 0 ? (
         <StatusMessage
@@ -81,7 +88,7 @@ export default function AdminEventsList() {
               return (
                 <li
                   key={event.id}
-                  className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"
+                  className="flex flex-col gap-3 p-4 transition-colors hover:bg-zinc-50 sm:flex-row sm:items-center sm:justify-between dark:hover:bg-zinc-900/40"
                 >
                   <div className="flex flex-col gap-1">
                     <Link href={`/events/${event.id}`} className="font-medium hover:underline">
@@ -110,9 +117,9 @@ export default function AdminEventsList() {
                   </div>
 
                   <button
-                    onClick={() => handleToggle(event.id, !event.isActive)}
+                    onClick={() => handleToggle(event.id, event.title, !event.isActive)}
                     disabled={pendingId === event.id}
-                    className="rounded-md border border-zinc-300 px-4 py-2 text-sm hover:bg-zinc-100 disabled:opacity-60 dark:border-zinc-700 dark:hover:bg-zinc-800"
+                    className={buttonClass("secondary")}
                   >
                     {pendingId === event.id
                       ? "Saving..."

@@ -1,13 +1,15 @@
 import type { ReactNode } from "react";
+import { buttonClass } from "@/components/Button";
 
 type StatusMessageProps = {
   kind: "loading" | "empty" | "error";
   title: string;
   text?: string;
   action?: ReactNode;
+  onRetry?: () => void;
 };
 
-export default function StatusMessage({ kind, title, text, action }: StatusMessageProps) {
+export default function StatusMessage({ kind, title, text, action, onRetry }: StatusMessageProps) {
   return (
     <div
       role={kind === "error" ? "alert" : "status"}
@@ -18,6 +20,11 @@ export default function StatusMessage({ kind, title, text, action }: StatusMessa
       ) : null}
       <p className={kind === "error" ? "font-medium text-red-600" : "font-medium"}>{title}</p>
       {text ? <p className="max-w-md text-sm text-zinc-600 dark:text-zinc-400">{text}</p> : null}
+      {onRetry ? (
+        <button onClick={onRetry} className={buttonClass("secondary")}>
+          Try again
+        </button>
+      ) : null}
       {action}
     </div>
   );

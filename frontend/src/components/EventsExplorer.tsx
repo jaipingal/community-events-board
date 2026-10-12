@@ -10,6 +10,7 @@ import StatusMessage from "@/components/StatusMessage";
 import { useAsyncData } from "@/hooks/useAsyncData";
 import { getEventCities, getEvents } from "@/lib/api";
 import { categories } from "@/lib/categories";
+import { buttonClass } from "@/components/Button";
 
 const PAGE_SIZE = 9;
 
@@ -71,8 +72,8 @@ export default function EventsExplorer() {
                 aria-pressed={selected}
                 className={
                   selected
-                    ? "rounded-full bg-zinc-900 px-4 py-1.5 text-sm text-white dark:bg-zinc-100 dark:text-zinc-900"
-                    : "rounded-full border border-zinc-300 px-4 py-1.5 text-sm hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
+                    ? "rounded-full bg-zinc-900 px-4 py-1.5 text-sm text-white transition-colors dark:bg-zinc-100 dark:text-zinc-900"
+                    : "rounded-full border border-zinc-300 px-4 py-1.5 text-sm transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
                 }
               >
                 {item.label}
@@ -120,14 +121,7 @@ export default function EventsExplorer() {
           kind="error"
           title="Could not load events"
           text={events.error}
-          action={
-            <button
-              onClick={events.reload}
-              className="rounded-md border border-zinc-300 px-4 py-2 text-sm hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
-            >
-              Try again
-            </button>
-          }
+          onRetry={events.reload}
         />
       ) : events.data && events.data.events.length === 0 ? (
         <StatusMessage
@@ -142,7 +136,7 @@ export default function EventsExplorer() {
             hasFilters ? (
               <button
                 onClick={clearFilters}
-                className="rounded-md border border-zinc-300 px-4 py-2 text-sm hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
+                className={buttonClass("secondary")}
               >
                 Clear filters
               </button>
