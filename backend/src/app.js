@@ -11,10 +11,10 @@ app.use(cors({ origin: process.env.CLIENT_URL }));
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.json({ name: 'Community Events Board API', health: '/api/health' });
+  res.json({ name: 'Community Events Board API', health: '/api/v1/health' });
 });
 
-app.use('/api/health', healthRoutes);
+app.use('/api/v1/health', healthRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
