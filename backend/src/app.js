@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import healthRoutes from './routes/health.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import eventRoutes from './routes/event.routes.js';
+import meRoutes from './routes/me.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import { notFound, errorHandler } from './middlewares/error.middleware.js';
 
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 app.use('/api/v1/health', healthRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/events', eventRoutes);
+app.use('/api/v1/me', meRoutes);
 app.use('/api/v1/admin', adminRoutes);
 
 app.use(notFound);

@@ -42,6 +42,17 @@ export const listEventsQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(50).default(9),
 });
 
+export const feedQuerySchema = z.object({
+  page,
+  limit: z.coerce.number().int().min(1).max(50).default(9),
+});
+
+export const favoriteCategoriesSchema = z.object({
+  categories: z
+    .array(category, 'categories must be a list')
+    .max(CATEGORIES.length, 'Too many categories'),
+});
+
 export const adminListQuerySchema = z.object({
   page,
   limit: z.coerce.number().int().min(1).max(50).default(20),

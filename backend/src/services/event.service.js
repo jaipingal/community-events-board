@@ -44,6 +44,33 @@ export const listEvents = async ({ category, city, search, page, limit }) => {
   };
 };
 
+export const listFeed = async (userId, { page, limit }) => {
+  const favorites = await prisma.favoriteCategory.findMany({
+    where: { userId },
+    select: { category: true },
+  });
+
+  const where = {
+    ...upcomingAndActive(),
+    category: { in: favorites.map((row) => row.category) },
+  };
+
+  const [events, total] = await prisma.$transaction([
+    prisma.event.findMany({
+      where,
+      orderBy: { startsAt: 'asc' },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.event.count({ where }),
+  ]);
+
+  return {
+    events: events.map(toEvent),
+    pagination: buildPagination(page, limit, total),
+  };
+};
+
 export const listCities = async () => {
   const rows = await prisma.event.findMany({
     where: upcomingAndActive(),
