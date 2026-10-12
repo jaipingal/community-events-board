@@ -8,6 +8,7 @@ import { inputClass } from "@/components/FormField";
 import Pagination from "@/components/Pagination";
 import StatusMessage from "@/components/StatusMessage";
 import { useAsyncData } from "@/hooks/useAsyncData";
+import { useMyReminders } from "@/hooks/useMyReminders";
 import { getEventCities, getEvents } from "@/lib/api";
 import { categories } from "@/lib/categories";
 import { buttonClass } from "@/components/Button";
@@ -51,6 +52,7 @@ export default function EventsExplorer() {
   );
   const events = useAsyncData(fetchEvents);
   const cities = useAsyncData(getEventCities);
+  const reminders = useMyReminders();
 
   const clearFilters = () => {
     setSearchText("");
@@ -148,7 +150,11 @@ export default function EventsExplorer() {
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {events.data.events.map((event) => (
               <li key={event.id}>
-                <EventCard event={event} />
+                <EventCard
+                  event={event}
+                  reminded={reminders.isReminded(event.id)}
+                  remindersLoading={reminders.loading}
+                />
               </li>
             ))}
           </ul>

@@ -8,13 +8,27 @@ import { useAsyncData } from "@/hooks/useAsyncData";
 import { getReminder, setReminder } from "@/lib/api";
 import { useAppSelector } from "@/store/hooks";
 
-export default function ReminderButton({ eventId }: { eventId: number }) {
+type ReminderButtonProps = {
+  eventId: number;
+  initial?: boolean;
+  loading?: boolean;
+  compact?: boolean;
+};
+
+export default function ReminderButton({
+  eventId,
+  initial,
+  loading = false,
+  compact = false,
+}: ReminderButtonProps) {
   const { user, token, loading: authLoading } = useAppSelector((state) => state.auth);
 
-  const fetchReminder = useCallback(
-    () => (token ? getReminder(token, eventId) : Promise.resolve({ reminder: false })),
-    [token, eventId],
-  );
+  const fetchReminder = useCallback(() => {
+    if (!token || loading || initial !== undefined) {
+      return Promise.resolve({ reminder: initial ?? false });
+    }
+    return getReminder(token, eventId);
+  }, [token, eventId, initial, loading]);
   const saved = useAsyncData(fetchReminder);
 
   const [override, setOverride] = useState<boolean | null>(null);
@@ -24,7 +38,12 @@ export default function ReminderButton({ eventId }: { eventId: number }) {
   if (authLoading) return null;
 
   if (!user || !token) {
-    return (
+    return compact ? (
+      <Link href="/login" className={buttonClass("secondary", "", "sm")}>
+        <Bell className="size-4" aria-hidden="true" />
+        Remind me
+      </Link>
+    ) : (
       <Link href="/login" className="text-sm font-medium underline">
         Log in to set a reminder
       </Link>
@@ -53,9 +72,9 @@ export default function ReminderButton({ eventId }: { eventId: number }) {
     <div className="flex flex-col gap-2">
       <button
         onClick={handleClick}
-        disabled={saved.loading || pending}
+        disabled={loading || saved.loading || pending}
         aria-pressed={enabled}
-        className={buttonClass(enabled ? "primary" : "secondary", "w-fit")}
+        className={buttonClass(enabled ? "primary" : "secondary", "w-fit", compact ? "sm" : "md")}
       >
         {enabled ? (
           <BellRing className="size-4" aria-hidden="true" />

@@ -216,3 +216,7 @@ export function saveCardDesign(
     token,
   });
 }
+
+export function getMyReminders(token: string) {
+  return request<{ eventIds: number[] }>("/me/reminders", { token });
+}

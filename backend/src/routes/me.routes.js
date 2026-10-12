@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   getFavoriteCategories,
   getFeed,
+  getReminders,
   saveFavoriteCategories,
 } from '../controllers/me.controller.js';
 import { authenticate } from '../middlewares/auth.middleware.js';
@@ -21,6 +22,7 @@ router.put(
   validateBody(favoriteCategoriesSchema),
   saveFavoriteCategories,
 );
+router.get('/reminders', getReminders);
 router.get('/feed', validateQuery(feedQuerySchema), getFeed);
 
 export default router;

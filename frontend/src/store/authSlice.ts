@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import * as api from "@/lib/api";
 import type { FieldError, User } from "@/lib/api";
-
-const TOKEN_KEY = "events_board_token";
+import { readToken, writeToken } from "@/lib/session";
 
 export type AuthError = {
   message: string;
@@ -20,21 +19,6 @@ const initialState: AuthState = {
   token: null,
   loading: true,
 };
-
-function readToken() {
-  try {
-    return sessionStorage.getItem(TOKEN_KEY);
-  } catch {
-    return null;
-  }
-}
-
-function writeToken(token: string | null) {
-  try {
-    if (token) sessionStorage.setItem(TOKEN_KEY, token);
-    else sessionStorage.removeItem(TOKEN_KEY);
-  } catch { }
-}
 
 function toAuthError(err: unknown): AuthError {
   if (err instanceof api.ApiError) {

@@ -1,5 +1,6 @@
 import * as eventService from '../services/event.service.js';
 import * as preferenceService from '../services/preference.service.js';
+import * as reminderService from '../services/reminder.service.js';
 
 export const getFavoriteCategories = async (req, res) => {
   const categories = await preferenceService.getFavoriteCategories(req.user.id);
@@ -12,6 +13,11 @@ export const saveFavoriteCategories = async (req, res) => {
     req.body.categories,
   );
   res.json({ categories });
+};
+
+export const getReminders = async (req, res) => {
+  const eventIds = await reminderService.listReminderEventIds(req.user.id);
+  res.json({ eventIds });
 };
 
 export const getFeed = async (req, res) => {

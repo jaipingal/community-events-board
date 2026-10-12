@@ -29,7 +29,7 @@ export default function SignupPage() {
 
     try {
       await dispatch(handleSignup({ name, email, password })).unwrap();
-      router.push("/events");
+      router.push("/preferences");
     } catch (err) {
       const { message, details } = err as AuthError;
       const errors: Record<string, string> = {};

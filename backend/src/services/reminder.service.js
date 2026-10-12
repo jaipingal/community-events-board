@@ -12,6 +12,15 @@ const ensureEventExists = async (eventId) => {
   }
 };
 
+export const listReminderEventIds = async (userId) => {
+  const rows = await prisma.eventReminder.findMany({
+    where: { userId },
+    select: { eventId: true },
+  });
+
+  return rows.map((row) => row.eventId);
+};
+
 export const hasReminder = async (userId, eventId) => {
   await ensureEventExists(eventId);
 

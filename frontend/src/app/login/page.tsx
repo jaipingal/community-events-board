@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import FormField from "@/components/FormField";
+import { getFavoriteCategories } from "@/lib/api";
 import type { AuthError } from "@/store/authSlice";
 import { handleLogin } from "@/store/authSlice";
 import { useAppDispatch } from "@/store/hooks";
@@ -27,8 +28,15 @@ export default function LoginPage() {
     setSubmitting(true);
 
     try {
-      const { user } = await dispatch(handleLogin({ email, password })).unwrap();
-      router.push(user.role === "ADMIN" ? "/admin/events" : "/events");
+      const { user, token } = await dispatch(handleLogin({ email, password })).unwrap();
+
+      if (user.role === "ADMIN") {
+        router.push("/admin/events");
+        return;
+      }
+
+      const { categories } = await getFavoriteCategories(token);
+      router.push(categories.length === 0 ? "/preferences" : "/events");
     } catch (err) {
       const { message, details } = err as AuthError;
       const errors: Record<string, string> = {};
