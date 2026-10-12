@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { CalendarDays, MapPin } from "lucide-react";
+import ReminderButton from "@/components/ReminderButton";
 import StatusMessage from "@/components/StatusMessage";
 import { useAsyncData } from "@/hooks/useAsyncData";
 import { getEvent } from "@/lib/api";
@@ -78,6 +79,8 @@ export default function EventDetails() {
         <p className="whitespace-pre-line text-zinc-700 dark:text-zinc-300">
           {event.description}
         </p>
+
+        <ReminderButton eventId={event.id} />
       </div>
     </article>
   );

@@ -28,6 +28,12 @@ export default function Navbar() {
           </Link>
           {loading ? null : user ? (
             <>
+              <Link href="/feed" className="hover:underline">
+                My feed
+              </Link>
+              <Link href="/preferences" className="hidden hover:underline sm:inline">
+                Preferences
+              </Link>
               {user.role === "ADMIN" ? (
                 <Link href="/admin/events" className="hover:underline">
                   Manage events

@@ -166,3 +166,30 @@ export function setEventStatus(token: string, id: number, isActive: boolean) {
     token,
   });
 }
+
+export function getFavoriteCategories(token: string) {
+  return request<{ categories: Category[] }>("/me/favorite-categories", { token });
+}
+
+export function saveFavoriteCategories(token: string, categories: Category[]) {
+  return request<{ categories: Category[] }>("/me/favorite-categories", {
+    method: "PUT",
+    body: { categories },
+    token,
+  });
+}
+
+export function getFeed(token: string, page = 1) {
+  return request<EventList>(`/me/feed${toQueryString({ page })}`, { token });
+}
+
+export function getReminder(token: string, eventId: number | string) {
+  return request<{ reminder: boolean }>(`/events/${eventId}/reminder`, { token });
+}
+
+export function setReminder(token: string, eventId: number | string, enabled: boolean) {
+  return request<{ reminder: boolean }>(`/events/${eventId}/reminder`, {
+    method: enabled ? "PUT" : "DELETE",
+    token,
+  });
+}
