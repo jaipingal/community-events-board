@@ -6,4 +6,4 @@ cp .env.example .env
 npm run dev
 ```
 
-Health check: `GET /api/health`
+Health check: `GET /api/v1/health`

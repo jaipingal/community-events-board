@@ -25,8 +25,8 @@ export default function LoginPage() {
     setSubmitting(true);
 
     try {
-      await dispatch(handleLogin({ email, password })).unwrap();
-      router.push("/");
+      const { user } = await dispatch(handleLogin({ email, password })).unwrap();
+      router.push(user.role === "ADMIN" ? "/admin/events" : "/events");
     } catch (err) {
       const { message, details } = err as AuthError;
       const errors: Record<string, string> = {};

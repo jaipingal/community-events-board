@@ -23,8 +23,16 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-2 text-sm sm:gap-4">
+          <Link href="/events" className="hover:underline">
+            Events
+          </Link>
           {loading ? null : user ? (
             <>
+              {user.role === "ADMIN" ? (
+                <Link href="/admin/events" className="hover:underline">
+                  Manage events
+                </Link>
+              ) : null}
               <span className="hidden max-w-[12rem] truncate text-zinc-600 sm:inline dark:text-zinc-400">
                 {user.name}
                 {user.role === "ADMIN" ? " (admin)" : ""}
