@@ -39,7 +39,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="mx-auto w-full max-w-sm px-4 py-12">
+    <main className="mx-auto w-full max-w-sm px-4 py-8 sm:max-w-md sm:py-12 lg:py-16">
       <h1 className="mb-6 text-2xl font-semibold">Log in</h1>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>

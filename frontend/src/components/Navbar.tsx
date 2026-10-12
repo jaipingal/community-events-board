@@ -17,15 +17,15 @@ export default function Navbar() {
 
   return (
     <header className="border-b border-zinc-200 dark:border-zinc-800">
-      <nav className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
         <Link href="/" className="font-semibold">
           Events Board
         </Link>
 
-        <div className="flex items-center gap-4 text-sm">
+        <div className="flex items-center gap-2 text-sm sm:gap-4">
           {loading ? null : user ? (
             <>
-              <span className="text-zinc-600 dark:text-zinc-400">
+              <span className="hidden max-w-[12rem] truncate text-zinc-600 sm:inline dark:text-zinc-400">
                 {user.name}
                 {user.role === "ADMIN" ? " (admin)" : ""}
               </span>
